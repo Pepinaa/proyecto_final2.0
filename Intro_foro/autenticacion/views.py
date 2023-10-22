@@ -51,4 +51,3 @@ def signout(request):
     logout(request)
     messages.success(request, "Se ha cerrado sesión de manera exitosa.")
     return redirect("home")
-    #olatilines
