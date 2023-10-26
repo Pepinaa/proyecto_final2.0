@@ -4,7 +4,7 @@ from django import forms
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('quote',)
+        fields = ('quote', 'image')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
