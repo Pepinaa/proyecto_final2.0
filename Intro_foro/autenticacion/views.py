@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from apps.users.models import UserProfile
 
 # Create your views here.
 def home(request):
@@ -18,7 +19,7 @@ def signup(request):
         password1 = request.POST['password1']
         password2 = request.POST['password2']
 
-        myuser = User.objects.create_user(username,email,password1)
+        myuser = UserProfile.objects.create_user(username,email,password1)
         myuser_first_name = fsname
         myuser_last_name = lsname
 

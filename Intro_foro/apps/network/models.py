@@ -10,7 +10,7 @@ class Post(models.Model):
     description = models.TextField()
     image = models.ImageField(
         upload_to='images/',
-        default='/images/default.png'
+        default='images/default.png'
     )
     published = models.DateTimeField(default=timezone.now)
     likes = models.IntegerField()
@@ -23,4 +23,3 @@ class Post(models.Model):
 
     def __str__(self):
         return self.description
-    

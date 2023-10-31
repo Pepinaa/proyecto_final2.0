@@ -10,7 +10,9 @@
     <img src={{post.image.url}} class="card-img-top" />
 
     <div class="card-body">
+      <a href={{ post.author.get_absolute_url }}>
         <h5 class="card-title">{{post.author}}</h5>
+      </a>
         <p class="card-text">
             {{post.description}}
         </p>
