@@ -18,11 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from poll import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('autenticacion.urls')),
     path('posts/', include('posts.urls')),
+    path('poll', views.home, name='home'),
+    path('create/', views.create, name='create'),
+    path('vote/<poll_id>/', views.vote, name='vote'),
+    path('results/<poll_id>/', views.results, name='results'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
