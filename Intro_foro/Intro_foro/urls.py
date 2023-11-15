@@ -9,6 +9,7 @@ urlpatterns = [
 #    path('', include('autenticacion.urls')),
     path('', include('apps.network.urls', namespace ='network')),
     path('', include('apps.users.urls', namespace="users")),
+    path('posts/', include('apps.posts.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

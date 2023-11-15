@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.network',
     'apps.users',
+    'apps.posts', ##ultima q puse 
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 AUTH_USER_MODEL = "users.UserProfile"
 
 
+##los que puso el nacho (su static es mi "media")
+# #MEDIA_URL = '/images/'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]
