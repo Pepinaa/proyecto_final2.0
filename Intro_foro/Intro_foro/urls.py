@@ -22,12 +22,14 @@ from poll import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('autenticacion.urls')),
+    #path('', include('users.urls')),
     path('posts/', include('posts.urls')),
     path('poll', views.home, name='home'),
     path('create/', views.create, name='create'),
     path('vote/<poll_id>/', views.vote, name='vote'),
     path('results/<poll_id>/', views.results, name='results'),
+    path('', include('network.urls', namespace ='network')),
+    path('', include('users.urls', namespace="users")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
