@@ -33,6 +33,9 @@
                     <img class="post-pic" src="{{post.image.url}}">
                 {% else %}
                 {% endif %}
+                {% if post.link %}
+                    <a href="{{ post.link }}">{{ post.link }}</a>
+                {% endif %}
             </div>
             <div class="post-footer">
                 <div class="likes d-flex">

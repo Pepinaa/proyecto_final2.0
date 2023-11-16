@@ -9,6 +9,7 @@ class Post(models.Model):
     likes = models.PositiveIntegerField(default=0, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     quote = models.TextField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.quote
