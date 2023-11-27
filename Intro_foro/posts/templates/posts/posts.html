@@ -20,7 +20,7 @@
             <div class="post-header d-flex justify-content-between">
                 <div class="d-flex">
                     <a href={{ post.author.get_absolute_url }}>
-                        <img class="profile-pic" src="{% static 'images/a.png' %}">
+                        <img class="profile-pic" src="{{ post.author.profile.image.url }}">
                     </a>
                     <h6 class="post-user">{{post.author}}</h6>
                 </div>
