@@ -20,7 +20,7 @@
             <div class="post-header d-flex justify-content-between">
                 <div class="d-flex">
                     <a href={{ post.author.get_absolute_url }}>
-                        <img class="profile-pic" src="{{ post.author.profile.image.url }}">
+                        <img class="profile-pic" src="{{ post.author.profile_pic.url }}">
                     </a>
                     <h6 class="post-user">{{post.author}}</h6>
                 </div>
@@ -49,18 +49,20 @@
                 <div class="likes d-flex">
                     <form action="{% url 'posts:like-post' post.pk %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="like-btn">
+                        <a href="{% url 'posts:like-post' post.pk %}" class="like-btn">
                             {% if post in liked_posts %}
-                                <i class="fas fa-heart" style="color: red;"></i>
+                                <i class="fas fa-heart" style="color: red; margin-right: 5px;"></i>
                             {% else %}
-                                <i class="far fa-heart" style="color: black;"></i>
+                                <i class="far fa-heart" style="color: black; margin-right: 5px;"></i>
                             {% endif %}
-                        </button>
+                        </a>
                     </form>
-                    <p><strong>{{ post.likes.count }} likes</strong></p>
+                    <p style="margin-left: 5px;"><strong>{{ post.likes.count }} likes</strong></p>
                 </div>
                 <p class="quote"><strong>{{ post.author }}</strong> {{ post.quote }}</p>
-                <a href="#"><p class="text-muted">Ver los {{ post.comments.all.count }} comentarios</p></a>
+                <a href="{% url 'posts:post-detail' post.pk %}#comments-section">
+                    <p class="text-muted">Ver los {{ post.comments.all.count }} comentarios</p>
+                </a>
                 <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
             </div>
         </div>

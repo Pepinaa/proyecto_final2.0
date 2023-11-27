@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
@@ -22,8 +22,16 @@ def like_post(request, pk):
 def posts(request):
     posts = Post.objects.all().order_by('-created_at')
     liked_posts = Post.objects.filter(likes=request.user)
-    return render(request, 'posts/posts.html', {'posts': posts, 'liked_posts': liked_posts})
+    post_comments = {}
+    for post in posts:
+        comments = Comment.objects.filter(post=post)
+        post_comments[post.id] = comments
 
+    post_comments_count = {}
+    for post in posts:
+        post_comments_count[post.id] = post.comments.count()
+
+    return render(request, 'posts/posts.html', {'posts': posts, 'post_comments_count': post_comments_count})
 
 def create_post(request):
     form = PostForm()
@@ -69,3 +77,21 @@ def delete_post(request, pk):
         return redirect("posts:posts")
 
     return render(request, 'posts/delete_post.html', {'post': post})
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = Comment.objects.filter(post=post)
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('posts:post-detail', pk=pk)  # Redirigir a la misma página de detalle del post
+
+    else:
+        comment_form = CommentForm()
+
+    return render(request, 'posts/post_detail.html', {'post': post, 'comments': comments, 'comment_form': comment_form})

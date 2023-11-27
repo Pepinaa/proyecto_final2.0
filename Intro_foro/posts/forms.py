@@ -8,8 +8,11 @@ class PostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['image'].label = 'Imagen'
+        self.fields['quote'].label = ''  
         self.fields['image'].required = False
         self.fields['quote'].widget.attrs.update({'class': 'form-control'})
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
