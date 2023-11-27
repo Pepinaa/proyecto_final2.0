@@ -1,6 +1,72 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-{% include 'navbar.html' %}
-    <h1>Posts</h1>
+
+{% if user.is_authenticated %}
+    {% include 'navbar.html' %}
+{% else %}
+    {% include 'user/login.html' %}
+    {% include 'base1.html' %}
+{% endif %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<div class="post-container">
+    {% for post in posts %}
+        <div class="post">
+            <div class="post-header d-flex justify-content-between">
+                <div class="d-flex">
+                    <a href={{ post.author.get_absolute_url }}>
+                        <img class="profile-pic" src="{{ post.author.profile_pic.url }}">
+                    </a>
+                    <h6 class="post-user">{{post.author}}</h6>
+                </div>
+                <ul class="navbar-nav justify-content-end">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-h" style="color: gray;"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'posts:edit-post' post.pk %}">Edit</a>
+                              <a class="dropdown-item" href="{% url 'posts:delete-post' post.pk %}">Delete</a>               
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="post-pic-container">
+                {% if post.image %}
+                    <img class="post-pic" src="{{post.image.url}}">
+                {% else %}
+                {% endif %}
+                {% if post.link %}
+                    <a href="{{ post.link }}">{{ post.link }}</a>
+                {% endif %}
+            </div>
+            <div class="post-footer">
+                <div class="likes d-flex">
+                    <form action="{% url 'posts:like-post' post.pk %}" method="post">
+                        {% csrf_token %}
+                        <a href="{% url 'posts:like-post' post.pk %}" class="like-btn">
+                            {% if post in liked_posts %}
+                                <i class="fas fa-heart" style="color: red; margin-right: 5px;"></i>
+                            {% else %}
+                                <i class="far fa-heart" style="color: black; margin-right: 5px;"></i>
+                            {% endif %}
+                        </a>
+                    </form>
+                    <p style="margin-left: 5px;"><strong>{{ post.likes.count }} likes</strong></p>
+                </div>
+                <p class="quote"><strong>{{ post.author }}</strong> {{ post.quote }}</p>
+                <a href="{% url 'posts:post-detail' post.pk %}#comments-section">
+                    <p class="text-muted">Ver los {{ post.comments.all.count }} comentarios</p>
+                </a>
+                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
     {% endblock %}
