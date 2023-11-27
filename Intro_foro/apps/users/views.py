@@ -44,10 +44,12 @@ def signup_view(request):
             )
             login(request, user)
             return redirect('users:profile')
-
         except Exception as e:
             print(e)
             return JsonResponse({'detail': f'{e}'})
+
+
+    return render(request, 'user/login.html', {'signup_form': signup_form})
 
 
 def logout_view(request):
