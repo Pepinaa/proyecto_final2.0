@@ -17,7 +17,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Has iniciado sesion correctamente')
-            return redirect('network:casa')
+            return redirect('/posts')
         else:
             messages.warning(
                 request, 'Correo Electronico o Contrasena invalida')

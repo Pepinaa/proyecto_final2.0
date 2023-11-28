@@ -33,6 +33,7 @@ def posts(request):
 
     return render(request, 'posts/posts.html', {'posts': posts, 'post_comments_count': post_comments_count})
 
+@login_required
 def create_post(request):
     form = PostForm()
 
@@ -89,7 +90,7 @@ def post_detail(request, pk):
             comment.post = post
             comment.author = request.user
             comment.save()
-            return redirect('posts:post-detail', pk=pk)  # Redirigir a la misma página de detalle del post
+            return redirect('posts:post-detail', pk=pk)  
 
     else:
         comment_form = CommentForm()
