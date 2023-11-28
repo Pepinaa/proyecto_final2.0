@@ -3,14 +3,28 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .forms import CreatePollForm
 from .models import Poll
+from .models import Vote
+from django.contrib import messages
+from datetime import datetime
+
 
 
 def home(request):
-    polls = Poll.objects.all()
+    today = datetime.now()
+    current_month = today.month
+    current_year = today.year
+
+    polls = Poll.objects.filter(
+        created_at__year=current_year, created_at__month=current_month
+    )
+
     context = {
-        'polls' : polls
+        'polls': polls,
+        'total_polls_this_month': polls.count()  # Contador para mostrar en la plantilla
     }
+
     return render(request, 'poll/home.html', context)
+
 
 def create(request):
     if request.method == 'POST':
@@ -35,25 +49,30 @@ def create(request):
 
 def vote(request, poll_id):
     poll = Poll.objects.get(pk=poll_id)
+    user = request.user  
+
+
+    if Vote.objects.filter(poll=poll, user=user).exists():
+        messages.warning(request, 'Ya has votado en esta encuesta.')
+        return redirect('results', poll_id=poll.id)
 
     if request.method == 'POST':
-
-        selected_option = request.POST['poll']
+        selected_option = request.POST.get('poll', None)
+        
         if selected_option == 'option1':
             poll.option_one_count += 1
         elif selected_option == 'option2':
             poll.option_two_count += 1
-
         else:
-            return HttpResponse(400, 'Invalid form')
+            return render(request, 'poll/vote.html', {'poll': poll, 'error_message': 'Selecciona una opción válida'})
 
         poll.save()
 
-        return redirect('results', poll.id)
+        Vote.objects.create(poll=poll, user=user)
 
-    context = {
-        'poll' : poll
-    }
+        return redirect('results', poll_id=poll.id)
+
+    context = {'poll': poll}
     return render(request, 'poll/vote.html', context)
 
 def results(request, poll_id):

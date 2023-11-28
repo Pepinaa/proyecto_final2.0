@@ -46,6 +46,7 @@ class CustomAccountManager(BaseUserManager):
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
+    profile_pic = models.ImageField(upload_to='users/', default='users/default.png')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     profile_pic = models.ImageField(

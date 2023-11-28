@@ -14,14 +14,22 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<style>
+    .small-profile-pic {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-right: 2px;
+    }
+</style>
 <div class="post-container">
     {% for post in posts %}
         <div class="post">
             <div class="post-header d-flex justify-content-between">
                 <div class="d-flex">
                     <a href={{ post.author.get_absolute_url }}>
-                        <img class="profile-pic" src="{{ post.author.profile_pic.url }}">
-                    </a>
+                        <img class="small-profile-pic" src="{{ post.author.profile_pic.url }}" alt="{{ post.author.username }} profile picture">
+</a>
                     <h6 class="post-user">{{post.author}}</h6>
                 </div>
                 <ul class="navbar-nav justify-content-end">
@@ -31,7 +39,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{% url 'posts:edit-post' post.pk %}">Edit</a>
-                              <a class="dropdown-item" href="{% url 'posts:delete-post' post.pk %}">Delete</a>               
+                              <a class="dropdown-item" href="{% url 'posts:delete-post' post.pk %}">Delete</a>
                         </div>
                     </li>
                 </ul>
@@ -57,7 +65,7 @@
                             {% endif %}
                         </a>
                     </form>
-                    <p style="margin-left: 5px;"><strong>{{ post.likes.count }} likes</strong></p>
+<p style="margin-left: 5px;"><strong>{{ post.likes.count }} likes</strong></p>
                 </div>
                 <p class="quote"><strong>{{ post.author }}</strong> {{ post.quote }}</p>
                 <a href="{% url 'posts:post-detail' post.pk %}#comments-section">
@@ -69,4 +77,4 @@
     {% endfor %}
 </div>
 
-    {% endblock %}
+{% endblock %}

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-
+from .forms import UserProfileUpdateForm
 from .forms import UserLoginForm, UserSignUpForm
 
 
@@ -84,3 +84,15 @@ def follow(request, slug):
         to_follow.followers.add(request.user)
     to_follow.save
     return redirect(to_follow)
+
+def change_profile_picture(request):
+    if request.method == 'POST':
+        profile_form = UserProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if profile_form.is_valid():
+            profile_form.save()
+            # Mensaje de éxito y redireccionamiento
+            return redirect('users:profile')
+    else:
+        profile_form = UserProfileUpdateForm(instance=request.user)
+
+    return render(request, 'user/change_profile_picture.html', {'profile_form': profile_form})

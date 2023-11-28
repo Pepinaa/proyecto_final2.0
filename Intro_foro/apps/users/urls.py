@@ -1,5 +1,5 @@
 from django.urls import path
-
+from .views import change_profile_picture
 from . import views
 
 app_name = 'users'
@@ -11,4 +11,5 @@ urlpatterns = [
     path("follow/<slug:slug>", views.follow, name='follow'),
     path('signup/', views.signup_view, name='signup'),
     path('logout/', views.logout_view, name='logout'),
+    path('change_profile_picture/', change_profile_picture, name='change_profile_picture'),
 ]

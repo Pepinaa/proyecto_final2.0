@@ -1,4 +1,5 @@
 from django import forms
+from .models import UserProfile
 
 
 class UserLoginForm(forms.Form):
@@ -71,3 +72,11 @@ class UserSignUpForm(forms.Form):
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Las Contraseñas no coinciden')
         return cd['password2']
+
+class UserProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_pic']
+        widgets = {
+            'profile_pic': forms.FileInput(attrs={'accept': 'image/*'}),
+        }
